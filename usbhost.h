@@ -241,6 +241,10 @@ uint8_t* MAX3421e< SPI_SS, INTR >::bytesWr(uint8_t reg, uint8_t nbytes, uint8_t*
         HAL_SPI_Transmit(&SPI_Handle, &data, 1, HAL_MAX_DELAY);
         HAL_SPI_Transmit(&SPI_Handle, data_p, nbytes, HAL_MAX_DELAY);
         data_p += nbytes;
+#elif defined(__LGT8FX8P__)
+		USB_SPI.transfer(reg | 0x02);
+		USB_SPI.transfer(data_p, nbytes);
+		data_p += nbytes;
 #elif !defined(__AVR__) || !defined(SPDR)
 #if defined(ESP8266) || defined(ESP32)
         yield();
